@@ -131,8 +131,22 @@ def is_heap(T):
         :type T: list (hierarchical rep. of bintree)
         :rtype: bool
     """
-    # FIXME
-    pass
+    heap = True
+
+    if (is_empty(T)):
+        return heap
+
+    else:
+        i = len(T) - 1
+
+        while (heap != False and i > 1):
+            if (T[i // 2][0] <= T[i][0]):
+                i -= 1
+
+            else:
+                heap = False
+
+    return heap
 
 
 def heap_sort(L):
