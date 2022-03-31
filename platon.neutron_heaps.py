@@ -102,24 +102,38 @@ def heap_pop(H):
         raise Exception("H cannot be empty")
 
     else:
-        minimum, s_minimum = __heap_pop_aux(H)
-        result = minimum[0]
-        i = minimum[1]
-        j = s_minimum[1]
+        result = H[1]
+        i = 1
+        j = len(H) - 1
+        finished = False
 
-        while (j <= (len(H) - 1)):
-            H[i] = H[j]
-            i = j
+        while not (finished):
+            H[i], H[j] = H[j], H[i]
 
-            if ((j * 2 + 1) > (len(H) - 1)):
-                j *= 2
+            if (j != (len(H) - 1)):
+                i = j
+
+            if ((i * 2) <= (len(H) - 1) and ((i * 2) + 1) <= (len(H) - 1)):
+
+                if (H[i][0] > H[i * 2][0] and H[i][0] > H[(i * 2) + 1][0]):
+                    mini = min((H[i * 2][0], i * 2), (H[(i * 2) + 1][0], (i * 2) + 1))
+                    j = mini[1]
+
+                elif (H[i][0] > H[i * 2][0]):
+                    j = H[i * 2][0]
+
+                elif (H[i][0] > H[(i * 2) + 1][0]):
+                    j = H[(i * 2) + 1][0]
+
+                else:
+                    finished = True
 
             else:
-                j = j * 2 + 1
+                finished = True
 
         H.pop()
 
-        return result
+    return result
 
 
 # ---------------------------------------------------------------
