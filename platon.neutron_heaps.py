@@ -69,27 +69,6 @@ def heap_push(H, elt, val):
                 (pVal, pElt) = H[j]
 
 
-def __heap_pop_aux(H):
-    """
-        Function which return the min and the second min and theirs index
-
-        :param H: The heap
-        :return: the min and the second min and theirs index
-        :rtype: ((minimum, index), (s_minimum, index))
-    """
-    minimum = (H[1], 1)
-    s_minimum = (H[len(H) - 1], len(H) - 1)
-
-    for i in range(2, len(H)):
-        if (H[i][0] < minimum[0][0]):
-            minimum = (H[i], i)
-
-        elif (H[i][0] < s_minimum[0][0] and H[i] != s_minimum):
-            s_minimum = (H[i], i)
-
-    return (minimum, s_minimum)
-
-
 def heap_pop(H):
     """
         removes and returns the pair of the smallest value in the heap H, raises Exception if H is empty
@@ -103,33 +82,43 @@ def heap_pop(H):
 
     else:
         result = H[1]
-        i = 1
-        j = len(H) - 1
+        taille = len(H) - 1
+        i, j = 1, taille
         finished = False
 
         while not (finished):
-            H[i], H[j] = H[j], H[i]
+            if (i <= taille and j <= taille):
+                H[i], H[j] = H[j], H[i]
 
-            if (j != (len(H) - 1)):
-                i = j
+                if (j != taille):
+                    i = j
 
-            if ((i * 2) <= (len(H) - 1) and ((i * 2) + 1) <= (len(H) - 1)):
+                left = i * 2
+                right = (i * 2) + 1
 
-                if (H[i][0] > H[i * 2][0] and H[i][0] > H[(i * 2) + 1][0]):
-                    mini = min((H[i * 2][0], i * 2), (H[(i * 2) + 1][0], (i * 2) + 1))
-                    j = mini[1]
+                if (right <= taille - 1):
+                    if (H[i][0] > H[left][0] and H[i][0] > H[right][0]):
+                        mini = min((H[left][0], left), (H[right][0], right))
+                        j = mini[1]
 
-                elif (H[i][0] > H[i * 2][0]):
-                    j = H[i * 2][0]
+                    elif (H[i][0] > H[left][0] and H[i][0] < H[right][0]):
+                        j = left
 
-                elif (H[i][0] > H[(i * 2) + 1][0]):
-                    j = H[(i * 2) + 1][0]
+                    elif (H[i][0] > H[right][0] and H[i][0] < H[left][0]):
+                        j = right
+
+                    else:
+                        finished = True
+
+                elif (left <= taille - 1):
+                    if (H[i][0] > H[left][0]):
+                        j = left
+
+                    else:
+                        finished = True
 
                 else:
                     finished = True
-
-            else:
-                finished = True
 
         H.pop()
 
