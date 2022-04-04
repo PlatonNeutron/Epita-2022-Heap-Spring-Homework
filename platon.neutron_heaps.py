@@ -173,18 +173,12 @@ def heap_sort(L):
     result = []
     result2 = Heap()
 
-    for i in range(0, len(L)):
-        if (isinstance(L[i][0], int)):
-            nb, elt = L[i]
+    for i in range(len(L)):
+        elt, val = L[i]
+        heap_push(result2, elt, val)
 
-        else:
-            elt, nb = L[i]
-
-        heap_push(result2, elt, nb)
-
-    for j in range(1, len(result2)):
-        nb, elt = result2[j]
-
-        result.append((elt, nb))
+    while (not is_empty(result2)):
+        temp1, temp2 = heap_pop(result2)
+        result.append((temp2, temp1))
 
     return result
